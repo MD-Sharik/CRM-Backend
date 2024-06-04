@@ -16,10 +16,9 @@ app.use(
   })
 );
 const corsOption = {
-  origin: "*",
+  origin: "https://crm-eosin-six.vercel.app", // Replace with your actual frontend origin
   optionsSuccessStatus: 200,
 };
-app.use(cors(corsOption));
 app.use("/api/v1/", router1);
 
 app.get("/", (req, res) => {
