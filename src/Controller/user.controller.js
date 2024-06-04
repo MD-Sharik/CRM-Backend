@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import User from "../Models/UserData/User.model.js";
-import Agent from "../Models/EmployeeData/Employee.model.js";
+// import Agent from "../Models/EmployeeData/Employee.model.js";
 import jwt from "jsonwebtoken";
 
 dotenv.config({
@@ -11,10 +11,10 @@ const userExists = async (email) => {
   const user = await User.findOne({ email });
   return !!user;
 };
-const agentExists = async (referralId) => {
-  const agent = await Agent.findOne({ referralId });
-  return !!agent;
-};
+// const agentExists = async (referralId) => {
+//   const agent = await Agent.findOne({ referralId });
+//   return !!agent;
+// };
 // Middleware for authentication
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
@@ -59,38 +59,6 @@ export const userLogin = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-// export const userSignup = async (req, res) => {
-//   try {
-//     const { firstName, lastName, email, password, phone, referralId } =
-//       req.body;
-
-//     // Check if referral ID is valid
-//     if (!(await agentExists(referralId))) {
-//       return res.status(400).json({ message: "Invalid referral ID" });
-//     }
-
-//     // Hash password for security
-//     const hashedPassword = await User.hashPassword(password);
-
-//     // Create new user
-//     const user = new User({
-//       firstName,
-//       lastName,
-//       email,
-//       password: hashedPassword,
-//       phone,
-//       referralId,
-//     });
-
-//     await user.save();
-
-//     res.status(201).json({ message: "User created successfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
 
 export default {
   userLogin,

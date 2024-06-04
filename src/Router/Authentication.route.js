@@ -4,6 +4,7 @@ import {
   agentLogin,
   agentSignup,
   userSignup,
+  verfiyOTP,
 } from "../Controller/agent.controller.js";
 import { adminLogin, adminSignup } from "../Controller/admin.controller.js";
 import verifyToken from "../Middlewares/UserAuth.middleware.js";
@@ -12,6 +13,7 @@ const router1 = express.Router();
 
 router1.route("/user/login").post(userLogin);
 router1.route("/user/signup").post(userSignup);
+router1.route("/user/verify-otp").post(verfiyOTP);
 router1.route("/agent/login").post(agentLogin);
 router1.route("/agent/signup").post(agentSignup);
 router1.route("/admin/login").post(adminLogin);
