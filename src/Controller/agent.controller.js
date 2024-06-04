@@ -151,10 +151,6 @@ export const userSignup = async (req, res) => {
 
     await newOTPVerfication.save();
     await sendOTP(email, otp);
-
-    res.status(201).json({
-      message: "User created successfully, Check your email for verification",
-    });
     res.status(201).json({
       message: "User created successfully, Check your email for verification",
       redirectUrl: "https://crm-backend-jade.vercel.app/user/verify-otp", // Replace with your actual URL
