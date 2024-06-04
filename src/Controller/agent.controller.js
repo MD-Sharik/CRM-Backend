@@ -13,6 +13,9 @@ dotenv.config({
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -166,7 +169,8 @@ export const userSignup = async (req, res) => {
 
     res.status(201).json({
       message: "User created successfully, Check your email for verification",
-      redirectUrl: "https://crm-backend-jade.vercel.app/user/verify-otp", // Replace with your actual URL
+      userId: savedUser._Id || null,
+      redirectUrl: "/user/verify-otp", // Replace with your actual URL
     });
   } catch (error) {
     console.error("Error during user signup:", error);
@@ -191,7 +195,7 @@ export const verfiyOTP = async (req, res) => {
       return res.status(400).json({ message: "OTP Expired, Request New OTP" });
     }
 
-    const validOTP = await bcrypt.compare(otp, userOTPRecord.otp);
+    const validOTP = bcrypt.compare(otp, userOTPRecord.otp);
     if (!validOTP) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
@@ -209,5 +213,4 @@ export default {
   agentSignup,
   userSignup,
   verifyToken,
-  verfiyOTP,
 };
