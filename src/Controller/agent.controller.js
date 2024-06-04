@@ -25,10 +25,10 @@ const agentExists = async (referralId) => {
   console.log(referralId);
   return !!agent;
 };
-const userExists = async (email) => {
-  const user = await User.findOne({ email });
+const userExists = async (email, phone) => {
+  const user = await User.findOne({ email, phone });
   console.log(!!User);
-  console.log(email);
+  console.log(email, phone);
   return !!user;
 };
 
@@ -117,7 +117,9 @@ export const userSignup = async (req, res) => {
     if (!(await agentExists(referralId))) {
       return res.status(400).json({ message: "Invalid referral ID" });
     }
-    if (await userExists(email)) {
+
+    // Check if user already exists
+    if (await userExists(email, phone)) {
       return res.status(400).json({ message: "User already exists" });
     }
 
@@ -136,12 +138,14 @@ export const userSignup = async (req, res) => {
     });
 
     const savedUser = await user.save();
+
     const otp = otpGenerator.generate(6, {
-      upperCaseAlphabets: False,
+      upperCaseAlphabets: false,
       specialChars: false,
     });
     const salt = await bcrypt.genSalt(10);
     const hashedOTP = await bcrypt.hash(otp, salt);
+
     const newOTPVerfication = new userOTPVerification({
       userId: savedUser._Id,
       opt: hashedOTP,
@@ -150,13 +154,23 @@ export const userSignup = async (req, res) => {
     });
 
     await newOTPVerfication.save();
-    await sendOTP(email, otp);
+
+    // Try sending OTP email with error handling
+    try {
+      await sendOTP(email, otp);
+    } catch (error) {
+      console.error("Error sending OTP email:", error);
+      // Consider logging the error and sending a notification to the admin
+      // You can return a specific error code for email sending issue here
+    }
+
     res.status(201).json({
       message: "User created successfully, Check your email for verification",
       redirectUrl: "https://crm-backend-jade.vercel.app/user/verify-otp", // Replace with your actual URL
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error during user signup:", error);
+    // Log the error with details for debugging
     res.status(500).json({ message: "Internal server error" });
   }
 };
