@@ -40,8 +40,59 @@ const sendOTP = async (email, otp) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Verify your email",
-    html: `<p>Enter the OTP <b>${otp}</b> in the app to verify your email.</p><p>This OTP <b>expires in 10 minutes</b>.</p>`,
+    html: `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Email Verification</title>
+      <style>
+        /* Reset some default styles */
+        body, p {
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Style for the container */
+        .container {
+          font-family: Arial, sans-serif;
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for the paragraphs */
+        p {
+          margin-bottom: 10px;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+
+        /* Style for the bold text */
+        #id {
+          color: #007bff;
+          background:white;
+          display:inline-block;
+          padding:5px 10px;
+          border-radius:0.5rem;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <p>Enter the OTP <span id="id">${otp}</span> in the app to verify your email.</p>
+        <p>This OTP <b>expires in 10 minutes</b>.</p>
+      </div>
+    </body>
+    </html>
+
+
+    `,
   };
+
   await transporter.sendMail(mailOptions);
 };
 
