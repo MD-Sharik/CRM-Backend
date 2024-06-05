@@ -30,7 +30,7 @@ const agentExists = async (referralId) => {
 };
 const userExists = async (email, phone) => {
   const user = await User.findOne({ email, phone });
-  console.log(!!User);
+  console.log(!!user);
   console.log(email, phone);
   return !!user;
 };
@@ -42,7 +42,7 @@ const sendOTP = async (email, otp) => {
     subject: "Verify your email",
     html: `<p>Enter the OTP <b>${otp}</b> in the app to verify your email.</p><p>This OTP <b>expires in 10 minutes</b>.</p>`,
   };
-  transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
 };
 
 // Middleware for authentication
@@ -68,14 +68,14 @@ export const agentLogin = async (req, res) => {
     if (!(await agentExists(referralId))) {
       return res
         .status(400)
-        .json({ message: "agent does not exist. Please sign up." });
+        .json({ message: "Agent does not exist. Please sign up." });
     }
 
     // Generate JWT token
     const token = jwt.sign({ referralId }, process.env.JWTSECRET);
 
     res.status(200).json({ token, referralId });
-    console.log("agent Logged in Successfully");
+    console.log("Agent Logged in Successfully");
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
@@ -150,10 +150,10 @@ export const userSignup = async (req, res) => {
     const hashedOTP = await bcrypt.hash(otp, salt);
 
     const newOTPVerfication = new userOTPVerification({
-      userId: savedUser._Id,
-      opt: hashedOTP,
+      userId: savedUser._id,
+      otp: hashedOTP,
       createdAt: Date.now(),
-      expiresAt: Date.now() + 600000,
+      expiredAt: Date.now() + 600000,
     });
 
     await newOTPVerfication.save();
@@ -169,8 +169,8 @@ export const userSignup = async (req, res) => {
 
     res.status(201).json({
       message: "User created successfully, Check your email for verification",
-      userId: savedUser._Id || null,
-      redirectUrl: "/user/verify-otp", // Replace with your actual URL
+      userId: savedUser._id,
+      redirectUrl: "api/v1/user/verify-otp", // Replace with your actual URL
     });
   } catch (error) {
     console.error("Error during user signup:", error);
@@ -179,29 +179,29 @@ export const userSignup = async (req, res) => {
   }
 };
 
-export const verfiyOTP = async (req, res) => {
+export const verifyOTP = async (req, res) => {
   try {
     const { userId, otp } = req.body;
     if (!userId || !otp) {
-      return res.status(400).json({ message: "User ID and OTP are Required" });
+      return res.status(400).json({ message: "User ID and OTP are required" });
     }
     const userOTPRecord = await userOTPVerification.findOne({ userId });
     if (!userOTPRecord) {
-      return res.status(400).json({ message: "Invalid User ID or OTP" });
+      return res.status(400).json({ message: "Invalid User ID" });
     }
 
-    if (userOTPRecord.expiredAt < Date.now()) {
+    if (userOTPRecord.expiresAt < Date.now()) {
       await userOTPVerification.deleteMany({ userId });
       return res.status(400).json({ message: "OTP Expired, Request New OTP" });
     }
 
-    const validOTP = bcrypt.compare(otp, userOTPRecord.otp);
+    const validOTP = await bcrypt.compare(otp, userOTPRecord.otp);
     if (!validOTP) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
     await User.updateOne({ _id: userId }, { verified: true });
     await userOTPVerification.deleteMany({ userId });
-    res.status(200).json({ message: "Email verified Successfully" });
+    res.status(200).json({ message: "Email verified successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
@@ -213,4 +213,5 @@ export default {
   agentSignup,
   userSignup,
   verifyToken,
+  verifyOTP,
 };
