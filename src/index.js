@@ -23,7 +23,10 @@ app.use(
 
 // CORS options configuration
 const corsOptions = {
-  origin: "https://crm-1dnirghsj-md-shariks-projects.vercel.app", // Replace with your actual frontend origin
+  origin: [
+    "https://crm-1dnirghsj-md-shariks-projects.vercel.app",
+    "https://crm-eosin-six.vercel.app/",
+  ], // Replace with your actual frontend origin
   optionsSuccessStatus: 200,
 };
 
