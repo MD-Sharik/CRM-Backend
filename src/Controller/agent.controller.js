@@ -28,6 +28,7 @@ const agentExists = async (referralId) => {
   console.log(referralId);
   return !!agent;
 };
+
 const userExists = async (email, phone) => {
   const user = await User.findOne({ email, phone });
   console.log(!!user);

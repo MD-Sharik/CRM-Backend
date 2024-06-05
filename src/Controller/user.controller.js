@@ -11,11 +11,7 @@ const userExists = async (email) => {
   const user = await User.findOne({ email });
   return !!user;
 };
-// const agentExists = async (referralId) => {
-//   const agent = await Agent.findOne({ referralId });
-//   return !!agent;
-// };
-// Middleware for authentication
+
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
@@ -47,6 +43,9 @@ export const userLogin = async (req, res) => {
 
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
+    }
+    if (!user.verified) {
+      return res.status(401).json({ message: "Please verify your account" });
     }
 
     // Generate JWT token
