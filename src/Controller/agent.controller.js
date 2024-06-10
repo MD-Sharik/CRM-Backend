@@ -43,54 +43,138 @@ const sendOTP = async (email, otp) => {
     to: email,
     subject: "Verify your email",
     html: `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <title>Email Verification</title>
-      <style>
-        /* Reset some default styles */
-        body, p {
-          margin: 0;
-          padding: 0;
-        }
-
-        /* Style for the container */
-        .container {
-          font-family: Arial, sans-serif;
-          max-width: 600px;
-          margin: 20px auto;
-          padding: 20px;
-          background-color: #f9f9f9;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Style for the paragraphs */
-        p {
-          margin-bottom: 10px;
-          font-size: 16px;
-          line-height: 1.5;
-        }
-
-        /* Style for the bold text */
-        .id {
-          color: #007bff;
-          background:white;
-          display:inline-block;
-          padding:5px 10px;
-          margin: 0px 10px
-          border-radius:0.5rem;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <p>Enter the OTP <span class="id">${otp[0]}</span> <span class="id">${otp[1]}</span> <span class="id">${otp[2]}</span> <span class="id">${otp[3]}</span> in the app to verify your email.</p>
-        <p>This OTP <b>expires in 10 minutes</b>.</p>
-      </div>
-    </body>
-    </html>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w=
+3.org/TR/REC-html40/loose.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+<head>
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"content-type">
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1.0;" name=3D"viewpo=
+rt">
+<meta content=3D"telephone=3Dno" name=3D"format-detection">
+<!-- /=3Dstylesheet_link_tag("mail_notifier.css") -->
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
+</head>
+<body>
+<table cellpadding=3D"0" cellspacing=3D"0" class=3D"cld_welcome_section gma=
+il-fix" style=3D"min-width:320px;" width=3D"100%">
+<tr>
+<!-- LEFT COLUMN -->
+<td valign=3D"top">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr>
+<td bgcolor=3D"#005CE4" height=3D"150"></td>
+</tr>
+</table>
+</td>
+<!-- CENTER COLUMN -->
+<td width=3D"600">
+<table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" class=3D"w-100p=
+" style=3D"max-width:600px; margin:0 auto;" width=3D"600">
+<tr>
+<td align=3D"center" bgcolor=3D"#005CE4" mc:edit=3D"block_01" style=3D"padd=
+ing:20px 15px 24px;">
+</td>
+</tr>
+<tr>
+<td bgcolor=3D"#0071ba" style=3D"border-radius:0 0 10px 10px;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr>
+<td bgcolor=3D"#ffffff" style=3D"border-radius:6px; box-shadow:0 2px 2px rg=
+ba(0, 0, 0, 0.24);">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr>
+<td>
+<table align=3D"left" class=3D"plr-0" style=3D"width: 100%; margin-bottom: =
+40px; padding: 0px 40px 0px 40px; font:500 18px/24px Arial, Helvetica, sans=
+-serif, Fira;">
+<tr align=3D"center">
+<td>
+FIRSTINDIA CREDIT
+</td>
+</tr>
+<tr>
+<td style=3D"font-size: 16px; line-height: 33px;">
+Hi ${firstName},
+</td>
+</tr>
+<tr>
+<td style=3D"font-size: 14px; line-height: 33px;">
+Here's the confirmation code you requested:
+</td>
+</tr>
+<tr>
+<td style=3D"font-size: 28px; line-height: 33px; font-weight: bold;">
+${otp}
+</td>
+</tr>
+<td style=3D"font-size: 14px; line-height: 33px;">
+If you didn't request this, you can ignore this email or let us know.
+</td>
+<tr>
+<td style=3D"font-size: 14px; line-height: 33px; font-weight: padding-top: =
+24px">
+<br>
+Thanks,
+</td>
+</tr>
+<tr>
+<td style=3D"font-size: 14px; line-height: 33px;">
+The FIRSTINDIACREDIT Team
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- footer -->
+<tr>
+<td style=3D"padding:32px 40px;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr>
+<td align=3D"center" mc:edit=3D"block_80" style=3D"padding:0 0 22px;">
+<a href=3D"https://cloudinary.com" style=3D"text-decoration:none;">
+<img alt=3D"Cloudinary Logo" src=3D"https://res.cloudinary.com/cloudinary/i=
+mage/upload/c_scale,w_200,dpr_2.0/v1/logo/for_white_bg/cloudinary_icon_for_=
+white_bg.png" style=3D"width:54px; font:14px Arial, Helvetica, sans-serif; =
+vertical-align:top;" width=3D"54">
+</a>
+</td>
+</tr>
+<tr>
+<td align=3D"center" mc:edit=3D"block_81" style=3D"padding:0 0 10px; font:5=
+00 12px/17px Arial, Helvetica, sans-serif, Fira; color:#a7afb3;">
+=C2=A9 2024 Cloudinary. All rights reserved.
+</td>
+</tr>
+<tr>
+<td align=3D"center" mc:edit=3D"block_82" style=3D"font:500 12px/17px Arial=
+, Helvetica, sans-serif, Fira; color:#0078ff;">
+<a href=3D"https://cloudinary.com/contact" style=3D"color:#0078ff; text-dec=
+oration:underline;">Contact Us</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+<!-- RIGHT COLUMN -->
+<td valign=3D"top">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr>
+<td bgcolor=3D"#005CE4" height=3D"150"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
 
 
     `,

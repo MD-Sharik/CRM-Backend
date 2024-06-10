@@ -3,6 +3,7 @@ import dbConnect from "./DB/user.db.js";
 import router1 from "./Router/Authentication.route.js";
 import { config } from "dotenv";
 import cors from "cors";
+import loanRoute from "./Router/loanRoute.route.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cors(corsOptions));
 
 // Define routes
 app.use("/api/v1/", router1);
+app.use("/api/v2/", loanRoute);
 
 // Default route
 app.get("/", (req, res) => {
