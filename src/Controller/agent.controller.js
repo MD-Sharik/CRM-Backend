@@ -5,6 +5,7 @@ import userOTPVerification from "../Models/UserOTPVerificationForm/UserOTPVerifi
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import otpGenerator from "otp-generator";
+import { signupSchema } from "../Middlewares/ValidationSchema.js";
 import bcrypt from "bcrypt";
 
 dotenv.config({
@@ -167,6 +168,20 @@ export const userSignup = async (req, res) => {
   try {
     const { firstName, lastName, email, password, phone, referralId } =
       req.body;
+
+    const validation = signupSchema.safeParse({
+      firstName,
+      lastName,
+      email,
+      password,
+      referralId,
+      phone,
+    });
+    if (!validation.success) {
+      return res.status(400).json({
+        message: validation.error.errors[0].message,
+      });
+    }
 
     // Check if referral ID is valid
     if (!(await agentExists(referralId))) {
