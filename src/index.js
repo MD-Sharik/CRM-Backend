@@ -73,13 +73,9 @@ app.use(
 );
 
 // CORS options configuration
-const corsOptions = {
-  origin: "https://crm-eosin-six.vercel.app",
-  optionsSuccessStatus: 200,
-};
 
 // Apply CORS middleware globally
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Define routes
 app.use("/api/v1/", router1);
