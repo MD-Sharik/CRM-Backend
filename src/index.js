@@ -6,13 +6,10 @@ import cors from "cors";
 import loanRoute from "./Router/loanRoute.route.js";
 
 const app = express();
-
 // Load environment variables
 config();
-
 // Middleware to parse JSON bodies
 app.use(express.json());
-
 // Middleware to parse URL-encoded bodies
 app.use(
   express.urlencoded({
@@ -24,7 +21,7 @@ app.use(
 
 // CORS options configuration
 const corsOptions = {
-  origin: "https://crm-eosin-six.vercel.app", // Replace with your actual frontend origin
+  origin: "https://crm-eosin-six.vercel.app",
   optionsSuccessStatus: 200,
 };
 
