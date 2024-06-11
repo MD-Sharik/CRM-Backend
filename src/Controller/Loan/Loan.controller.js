@@ -1,6 +1,6 @@
-import PersonalLoan from "../Models/LoanType/PersonalLoan.model.js";
-import HomeLoan from "../Models/LoanType/HomeLoan.model.js";
-import CarLoan from "../Models/LoanType/CarLoan.model.js";
+import CarLoan from "../../Models/LoanType/CarLoan.model.js";
+import HomeLoan from "../../Models/LoanType/HomeLoan.model.js";
+import PersonalLoan from "../../Models/LoanType/PersonalLoan.model.js";
 
 // Controller function for personal loan
 export const createPersonalLoan = async (req, res) => {

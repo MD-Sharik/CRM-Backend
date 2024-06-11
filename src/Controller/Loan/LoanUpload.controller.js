@@ -1,7 +1,15 @@
-import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
-import { cloudinaryStorage } from "multer-storage-cloudinary";
+import multer from "multer";
 import dotenv from "dotenv";
+
+// Import createRequire from module package
+import { createRequire } from "module";
+
+// Create require function
+const require = createRequire(import.meta.url);
+
+// Require CommonJS modules using the created require function
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 dotenv.config();
 
@@ -11,12 +19,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new cloudinaryStorage({
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "uploads",
-    format: async (req, file) => ".jpg",
-    public_id: (req, file) => file.fieldname + "-" + Date.now(),
+    allowedFormats: ["jpg", "png"],
+    public_id: (req, file) => `${file.fieldname}-${Date.now()}`,
   },
 });
 
