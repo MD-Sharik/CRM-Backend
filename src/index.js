@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
-    limit: "16kb",
+    limit: "10mb",
     parameterLimit: 1000000,
   })
 );
