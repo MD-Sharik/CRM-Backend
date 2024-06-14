@@ -2,7 +2,6 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import dotenv from "dotenv";
 
-// Import createRequire from module package
 import { createRequire } from "module";
 
 // Create require function

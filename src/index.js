@@ -62,13 +62,12 @@ const app = express();
 // Load environment variables
 config();
 // Middleware to parse JSON bodies
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 // Middleware to parse URL-encoded bodies
 app.use(
   express.urlencoded({
     extended: true,
-    limit: "20mb", // Increased payload size limit to 20 MB
-    parameterLimit: 1000000,
+    limit: "50mb",
   })
 );
 
