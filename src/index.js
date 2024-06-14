@@ -3,7 +3,6 @@ import dbConnect from "./DB/user.db.js";
 import router1 from "./Router/Authentication.route.js";
 import { config } from "dotenv";
 import cors from "cors";
-import loanRoute from "./Router/loanRoute.route.js";
 
 const app = express();
 // Load environment variables
@@ -19,7 +18,7 @@ app.use(
 );
 
 const corsOptions = {
-  origin: "*",
+  origin: ["https://crm-eosin-six.vercel.app/", "http://localhost:5173"],
 };
 
 // Apply CORS middleware globally
@@ -27,7 +26,6 @@ app.use(cors(corsOptions));
 
 // Define routes
 app.use("/api/v1/", router1);
-app.use("/api/v2/", loanRoute);
 
 // Default route
 app.get("/", (req, res) => {
