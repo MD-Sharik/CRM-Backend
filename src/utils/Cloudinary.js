@@ -14,9 +14,14 @@ const uploadOnCloudinary = async (localFilePath) => {
       resource_type: "auto",
     });
     console.log("file uploaded successfully", response.url);
+    try {
+      fs.unlinkSync(localFilePath);
+    } catch (error) {
+      console.error("Error deleting message", error);
+    }
     return response;
   } catch (error) {
-    fs.unlinkSync(localFilePath); // remove the locally saved temporary file as the upload operation has failed
+    fs.unlinkSync(localFilePath);
     return null;
   }
 };
