@@ -11,7 +11,16 @@ const personalLoanSchema = new mongoose.Schema({
   date: { type: Date, required: true, default: Date.now },
   amount: { type: Number, required: true },
   duration: { type: Number, required: true },
-  documentUrl: { type: String, required: true },
+  panCardUrl: { type: String, required: true },
+  aadhaar: { type: String, required: true },
+  passportSizePhotoUrl: { type: String, required: true },
+  salarySlipUrl: { type: String, required: true },
+  bankStatementUrl: { type: String, required: true },
+  officeIdUrl: { type: String, required: true },
+  isApproved: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const PersonalLoan = mongoose.model("PersonalLoan", personalLoanSchema);

@@ -11,7 +11,10 @@ const homeLoanSchema = new mongoose.Schema({
   date: { type: Date, required: true, default: Date.now },
   amount: { type: Number, required: true },
   duration: { type: Number, required: true },
-  documentUrl: { type: String, required: true },
+  aadhaarUrl: { type: String, required: true },
+  drivingLicenseUrl: { type: String, required: true },
+  panCardUrl: { type: String, required: true },
+  otherDocumentUrl: { type: String, required: true },
 });
 
 const HomeLoan = mongoose.model("HomeLoan", homeLoanSchema);
