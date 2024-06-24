@@ -1,13 +1,20 @@
 import express from "express";
 import {
+  getLoanStatus,
   submitCarLoan,
   submitPersonalLoan,
-} from "../Controller/Loan.controller.js";
+  getLoanList,
+  detailLoan,
+  submitHomeLoan,
+  approveLoan,
+  rejectLoan,
+  getLoanHistory,
+} from "../Controller/loan.controller.js";
 import { upload } from "../Middlewares/multer.middleware.js";
 
 const loanRouter = express.Router();
 
-// -------------CAR LOAN----------------
+// -------------CAR LOAN-------------------------------
 
 loanRouter.route("/loan/car").post(
   upload.fields([
@@ -19,7 +26,7 @@ loanRouter.route("/loan/car").post(
   submitCarLoan
 );
 
-//--------------PERSONAL LOAN--------------
+//--------------PERSONAL LOAN---------------------------
 
 loanRouter.route("/loan/personal").post(
   upload.fields([
@@ -33,7 +40,7 @@ loanRouter.route("/loan/personal").post(
   submitPersonalLoan
 );
 
-//--------------HOME LOAN--------------
+//------------------HOME LOAN-------------------------
 
 loanRouter.route("/loan/home").post(
   upload.fields([
@@ -42,7 +49,18 @@ loanRouter.route("/loan/home").post(
     { name: "panCardUrl", maxCount: 1 },
     { name: "otherDocumentUrl", maxCount: 1 },
   ]),
-  submitPersonalLoan
+  submitHomeLoan
 );
+
+//--------------LOAN STATUS---------------------------
+
+loanRouter.route("/loan/status").get(getLoanStatus);
+loanRouter.route("/agent/loanlist").get(getLoanList);
+loanRouter.route("/agent/loanhistory").get(getLoanHistory);
+loanRouter.route("/agent/detailloan").get(detailLoan);
+
+// -----------LOAN APPROVE/REJECT---------------------
+loanRouter.route("/agent/approveloan").put(approveLoan);
+loanRouter.route("/agent/rejectloan").put(rejectLoan);
 
 export default loanRouter;

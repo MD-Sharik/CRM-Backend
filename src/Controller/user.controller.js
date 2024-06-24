@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import User from "../Models/UserData/User.model.js";
-// import Agent from "../Models/EmployeeData/Employee.model.js";
 import jwt from "jsonwebtoken";
 
 dotenv.config({
