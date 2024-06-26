@@ -18,7 +18,7 @@ app.use(
 );
 
 const corsOptions = {
-  origin: ["https://crm-eosin-six.vercel.app/", "http://localhost:5173"],
+  origin: ["https://crm-eosin-six.vercel.app", "http://localhost:5173"],
   // origin: "*",
 };
 
