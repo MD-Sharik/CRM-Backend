@@ -9,22 +9,27 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (file) => {
   try {
-    if (!file) throw new Error("File is missing");
+    if (!file) {
+      throw new Error("File is missing");
+    }
 
-    const stream = cloudinary.uploader.upload_stream(
-      { resource_type: "auto" },
-      (error, result) => {
-        if (error) {
-          console.error("Error uploading to Cloudinary:", error.message);
-          throw error;
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { resource_type: "auto" },
+        (error, result) => {
+          if (error) {
+            console.error("Error uploading to Cloudinary:", error.message);
+            reject(error);
+          } else {
+            console.log("File uploaded successfully:", result.url);
+            resolve(result);
+          }
         }
-        console.log("File uploaded successfully:", result.url);
-        // Optionally handle any cleanup or response here
-      }
-    );
+      );
 
-    // Pipe the file buffer into the Cloudinary upload stream
-    streamifier.createReadStream(file.buffer).pipe(stream);
+      // Pipe the file buffer into the Cloudinary upload stream
+      streamifier.createReadStream(file.buffer).pipe(stream);
+    });
   } catch (error) {
     console.error("Error uploading to Cloudinary:", error.message);
     throw error;
