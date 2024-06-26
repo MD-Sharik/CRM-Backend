@@ -356,6 +356,7 @@ export const detailLoan = async (req, res) => {
 
 export const approveLoan = async (req, res) => {
   const { _id } = req.body;
+  console.log(_id);
   try {
     let carUpdate = await CarLoan.updateOne(
       { _id },
@@ -375,8 +376,6 @@ export const approveLoan = async (req, res) => {
       personalUpdate.nModified
     ) {
       return res.status(200).json({ message: "Loan approved successfully" });
-    } else {
-      return res.status(404).json({ message: "Loan not found" });
     }
   } catch (error) {
     console.error(error);
