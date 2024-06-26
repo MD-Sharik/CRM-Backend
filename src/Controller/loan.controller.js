@@ -66,7 +66,7 @@ export const submitCarLoan = async (req, res) => {
       message: "Car loan application submitted successfully",
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({
       message: "Error uploading data",
       error: error.message,
