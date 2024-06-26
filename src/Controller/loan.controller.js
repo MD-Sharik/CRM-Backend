@@ -2,7 +2,7 @@ import CarLoan from "../Models/LoanType/CarLoan.model.js";
 import HomeLoan from "../Models/LoanType/HomeLoan.model.js";
 import PersonalLoan from "../Models/LoanType/PersonalLoan.model.js";
 import User from "../Models/UserData/User.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import Agent from "../Models/EmployeeData/Employee.model.js";
 
 const agentExists = async (referralId) => {
