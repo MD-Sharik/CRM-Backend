@@ -14,37 +14,26 @@ export const submitCarLoan = async (req, res) => {
   try {
     const { name, email, userId, amount, duration, referralId } = req.body;
 
-    const aadhaarLocalPath = req.files?.aadhaar?.[0]?.path;
-    const panCardLocalPath = req.files?.panCardUrl?.[0]?.path;
-    const drivingLocalPath = req.files?.drivingLicenseUrl?.[0]?.path;
-    const otherDocumentLocalPath = req.files?.otherDocumentUrl?.[0]?.path;
+    const aadhaar = req.files?.aadhaar?.[0];
+    const panCardUrl = req.files?.panCardUrl?.[0];
+    const drivingLicenseUrl = req.files?.drivingLicenseUrl?.[0];
+    const otherDocumentUrl = req.files?.otherDocumentUrl?.[0];
 
-    if (!aadhaarLocalPath) {
-      console.log("Aadhaar file not found");
-      throw new Error("Aadhaar file not found");
+    if (!aadhaar || !panCardUrl || !drivingLicenseUrl || !otherDocumentUrl) {
+      console.log("Required files not found");
+      throw new Error("Required files not found");
     }
-    if (!panCardLocalPath) {
-      console.log("Pan Card file not found");
-      throw new Error("Pan Card file not found");
-    }
-    if (!drivingLocalPath) {
-      console.log("Driving License file not found");
-      throw new Error("Driving License file not found");
-    }
-    if (!otherDocumentLocalPath) {
-      console.log("Other Document file not found");
-      throw new Error("Other Document file not found");
-    }
+
     if (!(await agentExists(referralId))) {
       return res.status(400).json({
         message: "Referral ID does not exist. Please check referral ID.",
       });
     }
 
-    const aadhaar = await uploadOnCloudinary(aadhaarLocalPath);
-    const panCardUrl = await uploadOnCloudinary(panCardLocalPath);
-    const drivingLicenseUrl = await uploadOnCloudinary(drivingLocalPath);
-    const otherDocumentUrl = await uploadOnCloudinary(otherDocumentLocalPath);
+    const uploadedAadhaar = await uploadOnCloudinary(aadhaar);
+    const uploadedPanCard = await uploadOnCloudinary(panCardUrl);
+    const uploadedDrivingLicense = await uploadOnCloudinary(drivingLicenseUrl);
+    const uploadedOtherDocument = await uploadOnCloudinary(otherDocumentUrl);
 
     const user = await User.findById(userId);
 
@@ -56,17 +45,17 @@ export const submitCarLoan = async (req, res) => {
       userId: user._id,
       amount,
       duration,
-      aadhaar: aadhaar.url,
-      drivingLicenseUrl: drivingLicenseUrl.url || "",
-      panCardUrl: panCardUrl.url || "",
-      otherDocUrl: otherDocumentUrl.url || "",
+      aadhaar: uploadedAadhaar.url,
+      drivingLicenseUrl: uploadedDrivingLicense.url || "",
+      panCardUrl: uploadedPanCard.url || "",
+      otherDocUrl: uploadedOtherDocument.url || "",
     });
 
     res.status(200).json({
       message: "Car loan application submitted successfully",
     });
   } catch (error) {
-    console.error(error.message);
+    console.error("Error submitting car loan:", error.message);
     res.status(500).json({
       message: "Error uploading data",
       error: error.message,

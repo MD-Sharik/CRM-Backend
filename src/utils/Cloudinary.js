@@ -1,49 +1,5 @@
-// import { v2 as cloudinary } from "cloudinary";
-// import fs from "fs";
-
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
-
-// const uploadOnCloudinary = async (localFilePath) => {
-//   try {
-//     if (!localFilePath) throw new Error("Local file path is missing");
-
-//     const response = await cloudinary.uploader.upload(localFilePath, {
-//       resource_type: "auto",
-//     });
-
-//     console.log("File uploaded successfully:", response.url);
-
-//     // Delete local file after successful upload
-//     try {
-//       fs.unlinkSync(localFilePath);
-//       console.log("Local file deleted successfully");
-//     } catch (error) {
-//       console.error("Error deleting local file:", error.message);
-//     }
-//     return response;
-//   } catch (error) {
-//     console.error("Error uploading to Cloudinary:", error.message);
-
-//     // Delete local file in case of error during upload
-//     try {
-//       fs.unlinkSync(localFilePath);
-//       console.log("Local file deleted due to upload error");
-//     } catch (unlinkError) {
-//       console.error("Error deleting local file:", unlinkError);
-//     }
-
-//     throw error;
-//   }
-// };
-
-// export { uploadOnCloudinary };
-
 import { v2 as cloudinary } from "cloudinary";
-import { Readable } from "stream";
+import streamifier from "streamifier";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -53,7 +9,6 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (file) => {
   try {
-    const streamifier = require("streamifier");
     if (!file) throw new Error("File is missing");
 
     const stream = cloudinary.uploader.upload_stream(
@@ -67,6 +22,8 @@ const uploadOnCloudinary = async (file) => {
         // Optionally handle any cleanup or response here
       }
     );
+
+    // Pipe the file buffer into the Cloudinary upload stream
     streamifier.createReadStream(file.buffer).pipe(stream);
   } catch (error) {
     console.error("Error uploading to Cloudinary:", error.message);
