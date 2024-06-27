@@ -1,5 +1,9 @@
 import express from "express";
-import { userLogin } from "../Controller/user.controller.js";
+import {
+  forgotPass,
+  resetPassword,
+  userLogin,
+} from "../Controller/user.controller.js";
 import {
   agentLogin,
   agentSignup,
@@ -12,6 +16,8 @@ import verifyToken from "../Middlewares/UserAuth.middleware.js";
 const router1 = express.Router();
 
 router1.route("/user/login").post(userLogin);
+router1.route("/user/forgetpassword").post(forgotPass);
+router1.route("/user/resetpassword").post(resetPassword);
 router1.route("/user/signup").post(userSignup);
 router1.route("/user/verifyOTP").post(verifyOTP);
 router1.route("/agent/login").post(agentLogin);
